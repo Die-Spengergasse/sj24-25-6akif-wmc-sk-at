@@ -1,0 +1,23 @@
+.navbar {
+  background-color: #1f2937; /* Tailwind: bg-gray-800 */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
