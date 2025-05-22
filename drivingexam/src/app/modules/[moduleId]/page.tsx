@@ -1,28 +1,28 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { getTopicsByModule } from '@/app/apiClient/topicApiClient'
+import { Topic } from '@/app/types/Topic'
 import Link from 'next/link'
 import styles from './TopicsPage.module.css'
-import { Topic } from '@/app/types/Topic'
 
-export default function ModuleDetailPage() {
-  const { moduleId } = useParams()
-  const [topics, setTopics] = useState<Topic[]>([])
+export const dynamic = 'force-dynamic'
 
-  useEffect(() => {
-    if (!moduleId) return
-    fetch(`http://localhost:5080/api/topics?assignedModule=${moduleId}`)
-      .then((res) => res.json())
-      .then((data) => setTopics(data))
-      .catch((err) => console.error('Fehler beim Laden der Topics:', err))
-  }, [moduleId])
+type Props = {
+  params: { moduleId: string }
+}
+
+export default async function ModuleDetailPage(props: Props) {
+  const moduleId = props.params.moduleId
+
+  const topics = await getTopicsByModule(moduleId)
+
+  if (!Array.isArray(topics)) {
+    return <p className="text-red-500 p-4">Fehler beim Laden der Themen</p>
+  }
 
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Themen</h2>
       <ul className={styles.list}>
-        {topics.map((topic) => (
+        {topics.map((topic: Topic) => (
           <li key={topic.guid}>
             <Link
               href={`/modules/${moduleId}/topics/${topic.guid}`}

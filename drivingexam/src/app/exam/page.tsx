@@ -1,18 +1,8 @@
-'use client'
+import { getModules } from "@/app/apiClient/examApiClient"
+import Link from "next/link"
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { Module } from '@/app/types/Module'
-
-export default function ExamStartPage() {
-  const [modules, setModules] = useState<Module[]>([])
-
-  useEffect(() => {
-    fetch('http://localhost:5080/api/modules')
-      .then((res) => res.json())
-      .then((data) => setModules(data))
-      .catch((err) => console.error('Fehler beim Laden der Module:', err))
-  }, [])
+export default async function ExamStartPage() {
+  const modules = await getModules()
 
   return (
     <div className="p-8">
